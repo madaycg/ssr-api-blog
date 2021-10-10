@@ -1,28 +1,24 @@
 const { Article } = require("../models");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
+const articleService = require("../services/article.service");
 
 async function showAdmin(req, res) {
   // muestro el listado de articulos
   try {
-    const articles = await Article.findAll({
-      order: [["createdAt", "DESC"]],
-    }); // para ordenar los articulos de manera descendente
+    const articles = await articleService.findAll();
     res.render("admin", { articles, userid: req.user.id });
   } catch (e) {
     res.render("error", { error: e });
   }
 }
+
 //// editar
 
 async function editAdmin(req, res) {
   // muestra a través de un get el contenido del articulo en el formulario a editar
   try {
-    const article = await Article.findByPk(+req.params.id); // convierte el string a numero
-    if (!article) throw new Error("No existe el articulo");
-    if (req.user.role.name === "Writer" && article.userId !== req.user.id) {
-      res.render('error', {error: 'No puede acceder a este artículo'})
-    }
+    const article = await articleService.findByPk(parseInt(req.params.id), req.user.role.name, req.user.id);
     res.render("edit-create", { article, isCreate: false });
   } catch (e) {
     res.render("error", { error: e });
@@ -33,26 +29,8 @@ async function update(req, res) {
   /// hace un post realiza la actualizacion del contenido
   //  y lo guarda en la base de datos
   try {
-    const article = await Article.findByPk(+req.params.id);
-    if (req.user.role.name === "Writer" && article.userId !== req.user.id) {
-      return res.render("error", { error: "No tienes permiso para editar este artículo" });
-    }
-
-    const { titulo, contenido } = req.body;
-    if (contenido.length >= 300) {
-      await Article.update(
-        {
-          title: titulo,
-          content: contenido,
-        },
-        { where: { id: +req.params.id } }
-      );
-      res.redirect("/admin");
-    } else {
-      res.render("error", {
-        error: "El contenido debe contener al menos 300 caracteres",
-      });
-    }
+    await articleService.update(parseInt(req.params.id), req.user.role.name, req.user.id, req.body);
+    res.redirect("/admin");
   } catch (e) {
     res.render("error", { error: e });
   }
@@ -68,47 +46,31 @@ function showCreate(req, res) {
 // guarda los datos que llegan a traves del formulario en la base de datos
 async function create(req, res) {
   try {
-    if (req.body.contenido.length >= 300) {
-      const { titulo, contenido, autor } = req.body;
-      await Article.create({
-        title: titulo,
-        content: contenido,
-        author: autor,
-        userId: req.user.id,
-      });
-      res.redirect("/admin");
-    } else {
-      res.render("error", {
-        error: "El contenido debe contener al menos 300 caracteres", ///
-      });
-    }
+    await articleService.create(req.body, req.user.id);
+    res.redirect("/admin");
   } catch (error) {
     res.render("error", { error });
   }
 }
+
 ///// eliminar
 async function destroy(req, res) {
   try {
-    const article = await Article.findByPk(+req.params.id); // convierte el string a numero
-    if (article == undefined) throw new Error("No existe el articulo");
-    if (req.user.role.name === "Writer" && article.userId !== req.user.id) {
-      res.render('error', {error: 'No puede acceder a este artículo'})
-    }
-    if (article.userId != req.user.id) {
-      res.redirect("/admin");
-    } else {
-      await Article.destroy({
-        where: {
-          id: +req.params.id,
-        },
-      });
-      res.redirect("/admin");
-    }
+    await articleService.destroy(parseInt(req.params.id), req.user.role, req.user.id);
+    res.redirect("/admin");
   } catch (e) {
     res.render("error", { error: e });
   }
 }
 
+/*
+leyenda
+
+req.params.id: primaryKey
+req.user.role: objeto role
+req.user.id: userId
+req.body: article
+ */
 module.exports = {
   showAdmin,
   editAdmin,
