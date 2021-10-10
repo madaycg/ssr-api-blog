@@ -5,8 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "nodemon server.js",
-    "sayHollow": "echo \"Hola que tal\""
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "Hack Academy",
@@ -26,7 +25,9 @@
     "sequelize": "^6.6.5",
     "sqlite3": "^5.0.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  },
   "description": "Hack Academy - Ejemplo de MVC y Sequelize",
   "repository": {
     "type": "git",
