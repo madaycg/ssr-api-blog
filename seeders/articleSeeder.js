@@ -12,6 +12,7 @@ module.exports = async () => {
       content: faker.lorem.paragraphs(),
       author: faker.lorem.sentence(3),
       imagen: faker.image.image(),
+      userId: 1,
       });
   }
 
