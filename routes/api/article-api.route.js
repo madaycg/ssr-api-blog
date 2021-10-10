@@ -1,16 +1,18 @@
 const express = require("express");
-const ResponseModel = require("../../models/response.model");
-const adminController = require("../controllers/adminController");
 const router = express.Router();
+const {
+  create,
+  update,
+  remove,
+  getOne,
+  getAll,
+} = require("../../controllers/api/article-api.comtroller");
 
-
-router.get("/create", adminController.showCreate);
-router.post("/create", adminController.create);
-router.get("/delete/:id", adminController.destroy);
-router.get("/:id", adminController.editAdmin);
-router.post("/:id", adminController.update);
-router.get("/", adminController.showAdmin);
-
+router.post("/", create);
+router.put("/:id", update);
+router.delete("/:id", remove);
+router.get("/:id", getOne);
+router.get("/", getAll);
 
 
 module.exports = router;
