@@ -1,12 +1,18 @@
 const express = require("express");
-const ResponseModel = require("../../models/response.model");
 const router = express.Router();
+const {
+  create,
+  update,
+  remove,
+  getOne,
+  getAll,
+} = require("../../controllers/api/comment-api.comtroller");
 
-
-router.get('/', (req, res) => {
-  res.json(new ResponseModel('comments'))
-})
-
+router.post("/", create);
+router.put("/:id", update);
+router.delete("/:id", remove);
+router.get("/:id", getOne);
+router.get("/", getAll);
 
 
 module.exports = router;
