@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include("partials/meta") %>
+    <link href="/css/styles.css" rel="stylesheet" />
+  </head>
+  <body>
+    <!-- Navigation-->
+    <%- include("partials/navbar") %>
+    <!-- Page Header-->
+    <header class="masthead-article">
+      <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+          <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="site-heading">
+              <h2><%= article.title %></h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- Main Content-->
+    <div class="container">
+      <!-- Article -->
+      <hr />
+      <p><%= article.content %></p>
+      <hr />
+      <span class="text-muted">Autor: <%= article.author %></span><br />
+      <span class="text-muted"
+        >Creado: <%=article.createdAt.toLocaleString('es-ES', {dateStyle: 'long', timeStyle:
+        'short'})%></span
+      >
+      <!-- Comment section -->
+      <h3 id="articleComment">Comentarios:</h3>
+      <hr />
+      <% ArticleComments.forEach(comment => { %>
+      <p id="comments" class="post-title"><%=comment.content%></p>
+      <span id="commentsAuthor" class="text-muted">Comentario de: <%=comment.name%></span>
+      <hr />
+      <% }) %> <% if (user) {%>
+      <!-- Add comment form -->
+      <div class="card shadow p-5 mb-3">
+        <h5 class="mb-4">Que te pareció el articulo?</h5>
+        <form action="/article" method="POST">
+          <input type="hidden" name="id" value="<%=id%>" />
+          <label for="name">Nombre:</label>
+          <input
+            class="form-control"
+            name="name"
+            type="text"
+            id="name"
+            placeholder="Ingresa tu nombre..."
+            required
+          />
+          <label for="comment">Dejanos tu comentario:</label>
+          <input
+            class="form-control"
+            name="comment"
+            type="text"
+            id="comment"
+            placeholder="Ingresar comentario sobre el articulo..."
+            required
+          />
+          <button id="saveButton" class="btn btn-success my-3" type="submit">Guardar</button>
+        </form>
+      </div>
+
+      <% }%>
+    </div>
+    <!-- Footer-->
+    <%- include("partials/footer.ejs")%> <%- include("partials/scripts.ejs") %> <%-
+    include("partials/scripts") %>
+  </body>
+</html>

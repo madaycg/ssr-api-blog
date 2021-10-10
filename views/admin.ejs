@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="/css/styles.css" rel="stylesheet" />
+    <%- include("partials/meta") %>
+  </head>
+  <body class="black">
+    <%- include("partials/navbar") %>
+
+    <div class="container mt-90">
+      <div class="row">
+        <div class="col mt-2">
+          <h1>Listado de Artículos</h1>
+        </div>
+        <div class="col mt-2 text-end">
+          <a class="btn btn-success" href="/admin/create">Nuevo</a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Fecha de creación</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% articles.forEach(article => { %>
+              <tr>
+                <td><%=article.title%></td>
+                <td><%=article.author%></td>
+                <td>
+                  <%=article.createdAt.toLocaleString('es-ES', {dateStyle: 'long', timeStyle:
+                  'short'})%>
+                </td>
+                <td class="d-flex justify-content-center align-items-center">
+                  <% if(userid === article.userId || can(['edit', 'admin'])){%>
+                  <a href="/admin/<%=article.id%>" class="btn btn-primary">Editar</a>
+                  <a href="/admin/delete/<%=article.id%>" class="btn btn-danger">Eliminar</a>
+                  <%} %>
+                </td>
+              </tr>
+
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <%- include("partials/scripts") %>
+  </body>
+</html>

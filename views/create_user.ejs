@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link href="/css/styles.css" rel="stylesheet" />
+    <%- include("partials/meta") %>
+
+    <title>Document</title>
+  </head>
+  <body class="black">
+    <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+      <div class="container px-4 px-lg-5">
+        <a class="navbar-brand" href="/home">
+          <img src="/img/ha_logo_600x197.png" alt="" />
+        </a>
+      </div>
+    </nav>
+    <div class="container mt-90 mb-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card mt-5 shadow mb-3">
+            <div class="card-body">
+              <h5 class="card-title">
+                Crear un nuevo usuario
+              </h5>
+            </div>
+            <div class="card-body">
+              <form method="POST" action="/admin/user/create">
+                <div class="mb-3">
+                  <label for="nombre" class="form-label">Nombre</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nombre"
+                    name="nombre"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="apellido" class="form-label">Apellido</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="apellido"
+                    name="apellido"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email</label>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="email"
+                    required
+                  />
+                </div>
+                
+                <div class="mb-3">
+                  <label for="email" class="form-label">Contraseña</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    required
+                    value="1234"
+                  />
+                </div>
+
+                <div class="mb-3">
+                  <label for="rol" class="form-label">Rol</label>
+                  <select required name="rol" id="rol" class="form-control">
+                    <% roles.forEach(rol => { %>
+                    <option value="<%= rol.id %>"><%= rol.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </form>
+            </div>
+          </div>
+          <a href="/admin">Atrás</a>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
