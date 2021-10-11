@@ -6,7 +6,7 @@ const {
   remove,
   getOne,
   getAll,
-} = require("../../controllers/api/article-api.comtroller");
+} = require("../../controllers/api/article-api.controller");
 
 router.post("/", create);
 router.put("/:id", update);
