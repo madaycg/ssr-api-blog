@@ -1,9 +1,7 @@
-const bcrypt = require("bcryptjs");
-const { User, Roles } = require("./models");
-
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const { authenticate } = require('./services/login.service');
 
 module.exports = (app) => {
   app.use(
@@ -21,17 +19,9 @@ module.exports = (app) => {
     new LocalStrategy(
       { usernameField: "email", passwordField: "password" },
       async function (username, password, done) {
-        const user = await User.findOne({
-          where: { email: username },
-          include: [Roles],
-        });
-        if (!user) {
-          return done(null, false);
-        }
-        if (!bcrypt.compareSync(password, user.password)) {
-          return done(null, false);
-        }
-        return done(null, user);
+
+        const result = await authenticate(username, password);
+        return done(null, result);
       }
     )
   );

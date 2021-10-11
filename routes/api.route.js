@@ -5,8 +5,8 @@ const articleRoute = require("./api/article-api.route");
 const commentRoute = require("./api/comment-api.route");
 
 
-router.use("/article", articleRoute);
-router.use("/comment", commentRoute);
+router.use("/articles", articleRoute);
+router.use("/comments", commentRoute);
 
 
 module.exports = router;
