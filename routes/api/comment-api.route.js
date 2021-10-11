@@ -6,7 +6,7 @@ const {
   remove,
   getOne,
   getAll,
-} = require("../../controllers/api/comment-api.comtroller");
+} = require("../../controllers/api/comment-api.controller");
 
 router.post("/", create);
 router.put("/:id", update);
